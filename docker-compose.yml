@@ -1,0 +1,27 @@
+services:
+  # Node backend (default). Run: docker compose up --build
+  showcase:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      # Set a strong password. Without it, the admin page is read-only.
+      ADMIN_PASSWORD: "${ADMIN_PASSWORD:-changeme}"
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
+
+  # Ruby/Sinatra backend (same API + DB). Run instead with:
+  #   docker compose --profile ruby up --build showcase-ruby
+  showcase-ruby:
+    profiles: ["ruby"]
+    build:
+      context: .
+      dockerfile: ruby/Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      ADMIN_PASSWORD: "${ADMIN_PASSWORD:-changeme}"
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
