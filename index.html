@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projekttage – Gymnasium Steglitz</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --accent: #38bdf8;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    header {
+      text-align: center;
+      padding: 4rem 1rem 2rem;
+    }
+    header h1 {
+      margin: 0 0 .5rem;
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+    }
+    header p {
+      margin: 0;
+      color: var(--muted);
+    }
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 1rem 1rem 4rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1rem;
+    }
+    a.card {
+      display: block;
+      background: var(--card);
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 1.25rem;
+      text-decoration: none;
+      color: var(--text);
+      transition: transform .12s ease, border-color .12s ease;
+    }
+    a.card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent);
+    }
+    a.card .name {
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+    a.card .url {
+      color: var(--accent);
+      font-size: .85rem;
+      word-break: break-all;
+      margin-top: .35rem;
+    }
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: .85rem;
+      padding: 2rem 1rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Projekttage – Schülerseiten</h1>
+    <p>Gymnasium Steglitz</p>
+  </header>
+
+  <main>
+    <div class="grid" id="grid"></div>
+  </main>
+
+  <footer>Projekttage Webentwicklung</footer>
+
+  <script>
+    // ============================================================
+    // HIER LINKS HINZUFÜGEN
+    // Pro Schüler eine Zeile. Komma am Ende nicht vergessen.
+    // { name: "Vorname Nachname", url: "https://..." },
+    // ============================================================
+    const seiten = [
+      { name: "Beispiel Schüler", url: "https://pt-vorname-nachname.hackschule.de" },
+    ];
+    // ============================================================
+
+    const grid = document.getElementById("grid");
+    seiten.forEach(s => {
+      const a = document.createElement("a");
+      a.className = "card";
+      a.href = s.url;
+      a.target = "_blank";
+      a.rel = "noopener";
+      a.innerHTML = '<div class="name"></div><div class="url"></div>';
+      a.querySelector(".name").textContent = s.name;
+      a.querySelector(".url").textContent = s.url.replace(/^https?:\/\//, "");
+      grid.appendChild(a);
+    });
+  </script>
+</body>
+</html>
