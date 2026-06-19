@@ -1,0 +1,55 @@
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  color: white;
+  scroll-snap-type: y mandatory;   /* lässt jede Szene "einrasten" */
+}
+
+/* ======= Jede Szene füllt den ganzen Bildschirm ======= */
+.szene {
+  height: 100vh;                    /* 100vh = volle Bildschirmhöhe */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1rem;
+  scroll-snap-align: start;
+}
+
+/* ======= Hintergrundfarben pro Szene ======= */
+/* Ändere die Farben und schau, was passiert! */
+.szene-1 { background: linear-gradient(135deg, #ff6b6b, #ffa502); }
+.szene-2 { background: linear-gradient(135deg, #1e3799, #0c2461); }
+.szene-3 { background: linear-gradient(135deg, #38ada9, #079992); }
+.szene-4 { background: linear-gradient(135deg, #b71540, #eb2f06); }
+.szene-5 { background: linear-gradient(135deg, #6c5ce7, #341f97); }
+
+/* ======= Text in der Mitte, mit Einblende-Effekt ======= */
+.inhalt {
+  max-width: 600px;
+  animation: einblenden 1.2s ease both;
+}
+
+h1 { font-size: clamp(2rem, 6vw, 3.5rem); margin: 0 0 1rem; }
+h2 { font-size: clamp(1.6rem, 5vw, 2.6rem); margin: 0 0 1rem; }
+p  { font-size: 1.3rem; opacity: 0.95; }
+
+/* ======= Animation: Text fährt sanft hoch und wird sichtbar ======= */
+@keyframes einblenden {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ======= Hüpfender Pfeil als Scroll-Hinweis ======= */
+.pfeil {
+  font-size: 3rem;
+  margin-top: 2rem;
+  animation: huepfen 1.5s infinite;
+}
+
+@keyframes huepfen {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(15px); }
+}

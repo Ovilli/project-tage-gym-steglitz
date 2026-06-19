@@ -1,0 +1,65 @@
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  background: #1e272e;
+  color: white;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ======= Obere Leiste mit Titel, Zeit, Punkten ======= */
+.leiste {
+  text-align: center;
+  padding: 1rem;
+  background: #0c2461;
+}
+
+.leiste h1 { margin: 0 0 0.5rem; }
+
+.anzeige {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+}
+
+#start {
+  font-size: 1.1rem;
+  padding: 0.6rem 1.6rem;
+  border: none;
+  border-radius: 10px;
+  background: #00b894;
+  color: white;
+  cursor: pointer;
+}
+
+#start:hover { background: #00997a; }
+
+/* ======= Das Spielfeld ======= */
+.feld {
+  position: relative;     /* wichtig: damit das Ziel sich frei platzieren kann */
+  flex: 1;                /* nimmt den restlichen Platz ein */
+  overflow: hidden;
+}
+
+.hinweis {
+  text-align: center;
+  margin-top: 3rem;
+  opacity: 0.8;
+  font-size: 1.2rem;
+}
+
+/* ======= Das Ziel, das man anklicken muss ======= */
+.ziel {
+  position: absolute;
+  font-size: 3rem;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.1s;
+}
+
+.ziel:active { transform: scale(0.8); }

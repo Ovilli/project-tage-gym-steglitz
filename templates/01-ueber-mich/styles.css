@@ -1,0 +1,79 @@
+/* ====================================================
+   Farben – ändere sie und schau, was passiert!
+   ==================================================== */
+:root {
+  --haupt: #6c5ce7;     /* die Hauptfarbe */
+  --hell:  #f4f2ff;     /* heller Hintergrund */
+  --text:  #2d3436;     /* Textfarbe */
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Comic Sans MS", "Segoe UI", sans-serif;
+  background: var(--hell);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+/* ======= Kopfbereich ======= */
+.kopf {
+  text-align: center;
+  padding: 3rem 1rem;
+  background: linear-gradient(135deg, var(--haupt), #a29bfe);
+  color: white;
+}
+
+.avatar {
+  font-size: 5rem;
+  background: white;
+  width: 7rem;
+  height: 7rem;
+  line-height: 7rem;
+  border-radius: 50%;     /* macht einen Kreis */
+  margin: 0 auto 1rem;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+}
+
+.kopf h1 { margin: 0.2rem 0; font-size: 2.2rem; }
+.spruch  { margin: 0; opacity: 0.9; }
+
+/* ======= Inhalt ======= */
+main {
+  max-width: 640px;
+  margin: -2rem auto 0;   /* zieht den Inhalt etwas nach oben */
+  padding: 1rem;
+}
+
+/* Eine "Karte" ist eine weiße Box mit Schatten */
+.karte {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+.karte h2 {
+  margin-top: 0;
+  color: var(--haupt);
+}
+
+table { width: 100%; border-collapse: collapse; }
+th, td { text-align: left; padding: 0.5rem; border-bottom: 1px solid #eee; }
+th { width: 40%; }
+
+a {
+  color: var(--haupt);
+  font-weight: bold;
+  text-decoration: none;
+}
+a:hover { text-decoration: underline; }
+
+footer {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: #888;
+  font-size: 0.9rem;
+}
