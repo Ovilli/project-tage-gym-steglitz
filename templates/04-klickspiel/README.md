@@ -4,6 +4,12 @@ Ein kleines Reaktionsspiel: Ein Ziel 🎯 springt herum, du musst es so oft wie 
 anklicken, bevor die Zeit abläuft. **HTML, CSS & JavaScript** – das anspruchsvollste
 Template, mit Timer und Punktezähler.
 
+## ⚡ Schnellstart (in 1 Minute ein Erfolg!)
+
+1. Öffne den Ordner `04-klickspiel` und starte **Live Server** (»Go Live«).
+2. Öffne `script.js`. Ganz oben ändere `ZIEL_EMOJI` von `"🎯"` in z. B. `"🍕"`. Speichern (Strg+S).
+3. Im Browser auf **Start** klicken und dein Emoji jagen! 🎉
+
 ## So startest du
 
 1. Öffne den Ordner `04-klickspiel`.

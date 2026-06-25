@@ -12,6 +12,10 @@ In diesem Kurs baust du in drei Tagen deine eigene Webseite. Am <strong>Tag 1</s
 So funktioniert der Kurs: Lies einen kleinen Abschnitt, tippe den Code selbst ab und schau im Browser, was passiert. Tippe den Code wirklich selbst – nicht kopieren! So lernst du viel schneller. Wenn etwas nicht klappt, ist das völlig normal. Fehler gehören dazu.
 </div>
 
+<div class='hint'>
+<strong>Deine Helfer:</strong> Der <strong>Spickzettel</strong> (<code>SPICKZETTEL.md</code>) hat alle Bausteine auf einer Seite – am besten ausdrucken! Wenn etwas kaputt ist, hilft <code>HILFE.md</code>. Und mit <code>ABZEICHEN.md</code> sammelst du für alles, was du schaffst, ein Abzeichen. 🏅
+</div>
+
 ---
 
 # Tag 1 – HTML: Der Inhalt deiner Seite
@@ -214,6 +218,10 @@ Schön ist das noch nicht – aber das ist okay! HTML kümmert sich nur um den *
 <strong>Mini-Aufgabe für Tag 1:</strong> Baue deine Seite über dein Lieblingsthema (Spiel, Tier, Sport, Band …). Sie soll mindestens enthalten: eine <code>&lt;h1&gt;</code>-Überschrift, zwei Absätze, eine Liste, einen Link und ein Bild. Sei kreativ!
 </div>
 
+<div class='hint'>
+<strong>⭐ Für Schnelle (Profi-Aufgabe):</strong> War das zu leicht? Dann baue eine <strong>zweite Seite</strong> (z. B. <code>seite2.html</code>) und verlinke sie von deiner Startseite mit <code>&lt;a href="seite2.html"&gt;…&lt;/a&gt;</code>. Bonus: Verlinke von Seite 2 wieder zurück zur Startseite.
+</div>
+
 ---
 
 # Tag 2 – CSS: Deine Seite wird schön
@@ -359,6 +367,10 @@ Schau dir deine Seite mal auf dem Handy an – sie ist viel zu klein. Füge dies
 
 <div class='hint'>
 <strong>Mini-Aufgabe für Tag 2:</strong> Mach deine Seite von gestern schön! Gib ihr eine Hintergrundfarbe (<code>background-color</code> beim <code>body</code>), eine schöne Schriftfarbe und gestalte Überschriften, Links und Bilder. Probier ruhig viele Farben aus.
+</div>
+
+<div class='hint'>
+<strong>⭐ Für Schnelle (Profi-Aufgabe):</strong> Schon fertig? Probier einen <strong>Farb-Verlauf</strong> als Hintergrund: <code>background: linear-gradient(135deg, #6c5ce7, #a29bfe);</code> beim <code>body</code> oder beim Kopfbereich. Tausche die zwei Farben aus und finde deine Lieblings-Kombi.
 </div>
 
 ---
@@ -529,6 +541,10 @@ farbeKnopf.addEventListener("click", function() {
 
 <div class='hint'>
 <strong>Mini-Aufgabe für Tag 3:</strong> Baue deine eigene interaktive Idee! Ideen: ein Quiz mit mehreren Fragen, ein Knopf, der ein Bild austauscht, ein Begrüßungs-Text, der den Namen des Besuchers nutzt (mit <code>prompt</code>), oder ein Zähler mit einem »-1«-Knopf dazu.
+</div>
+
+<div class='hint'>
+<strong>⭐ Für Schnelle (Profi-Aufgabe):</strong> Baue einen Zähler mit <strong>zwei Knöpfen</strong> (»+1« und »-1«). Extra-Challenge: Wenn die Zahl <code>0</code> erreicht, soll sich per <code>if</code> der Text oder die Hintergrundfarbe ändern. Tipp: <code>if (zahl === 0) { … }</code>.
 </div>
 
 ## Deine Seite veröffentlichen

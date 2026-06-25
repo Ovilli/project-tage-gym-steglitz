@@ -1,0 +1,68 @@
+/* ====================================================
+   Farben – ändere sie und schau, was passiert!
+   ==================================================== */
+:root {
+  --haupt: #e84393;     /* die Hauptfarbe */
+  --hell:  #fff0f6;     /* heller Hintergrund */
+  --text:  #2d3436;     /* Textfarbe */
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Comic Sans MS", "Segoe UI", sans-serif;
+  background: var(--hell);
+  color: var(--text);
+  line-height: 1.6;
+  text-align: center;
+}
+
+/* ======= Kopfbereich ======= */
+.kopf {
+  padding: 2rem 1rem;
+  background: linear-gradient(135deg, var(--haupt), #fd79a8);
+  color: white;
+}
+.kopf h1 { margin: 0.2rem 0; font-size: 2.2rem; }
+.kopf p  { margin: 0; opacity: 0.9; }
+
+/* ======= Das Knopf-Gitter ======= */
+main {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);   /* 4 Knöpfe pro Reihe */
+  gap: 1rem;
+}
+
+/* So sehen die Knöpfe aus */
+button {
+  font-size: 2.5rem;
+  padding: 1rem 0;
+  border: none;
+  border-radius: 16px;
+  background: white;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+  transition: transform 0.1s;
+}
+
+/* Wenn man drückt, wird der Knopf kurz größer */
+button:active {
+  transform: scale(1.2);
+  background: var(--haupt);
+}
+
+/* ======= Die große Anzeige ======= */
+#anzeige {
+  font-size: 6rem;
+  margin: 1rem 0 2rem;
+}
+
+footer {
+  padding: 2rem 1rem;
+  color: #b2849c;
+  font-size: 0.9rem;
+}

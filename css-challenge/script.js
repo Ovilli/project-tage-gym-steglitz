@@ -304,12 +304,18 @@ function pruefen() {
     return;
   }
   const lvl = levels[aktuell];
-  const zielStil = getComputedStyle(zielBox);
+  const userCss = deineBox.style.cssText;
+  deineBox.style.cssText = lvl.ziel;
+  const refWerte = {};
+  for (const eig of lvl.pruefe) {
+    refWerte[eig] = getComputedStyle(deineBox).getPropertyValue(eig);
+  }
+  deineBox.style.cssText = userCss;
   const deinStil = getComputedStyle(deineBox);
 
   let richtig = true;
   for (const eig of lvl.pruefe) {
-    if (zielStil.getPropertyValue(eig) !== deinStil.getPropertyValue(eig)) richtig = false;
+    if (refWerte[eig] !== deinStil.getPropertyValue(eig)) richtig = false;
   }
 
   if (richtig) gewonnen();
@@ -499,8 +505,7 @@ document.getElementById("pruefen-knopf").addEventListener("click", pruefen);
 document.getElementById("loesung-knopf").addEventListener("click", function () {
   eingabe.value = levels[aktuell].ziel;
   ac.schliessen(); aktualisiere();
-  rueck.textContent = "Lösung eingesetzt – klick auf »Ausführen«, um sie zu prüfen.";
-  rueck.className = "rueckmeldung";
+  pruefen();
 });
 
 document.getElementById("reset-knopf").addEventListener("click", function () {

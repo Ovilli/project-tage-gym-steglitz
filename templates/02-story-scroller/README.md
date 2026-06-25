@@ -4,6 +4,13 @@ Eine Geschichte (oder Fan-Seite über dein Lieblingsthema), bei der jede Szene d
 ganzen Bildschirm füllt. Beim Scrollen rasten die Szenen ein und der Text blendet
 sich sanft ein. **HTML & CSS** – mit ein bisschen CSS-Animation.
 
+## ⚡ Schnellstart (in 1 Minute ein Erfolg!)
+
+1. Öffne den Ordner `02-story-scroller` und starte **Live Server** (»Go Live«).
+2. Öffne `index.html` und such die **erste** `<h1>`-Überschrift.
+3. Schreib deinen eigenen Titel rein. Speichern (Strg+S).
+4. Scroll im Browser nach unten – deine Geschichte rastet Szene für Szene ein. 🎉
+
 ## So startest du
 
 1. Öffne den Ordner `02-story-scroller`.

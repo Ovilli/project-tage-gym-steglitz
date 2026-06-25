@@ -4,6 +4,13 @@ Ein klickbares Quiz mit Fragen, richtigen/falschen Antworten und Punktezähler.
 **HTML, CSS & JavaScript** – das JavaScript ist schon fertig verdrahtet, du
 veränderst vor allem die Fragen.
 
+## ⚡ Schnellstart (in 1 Minute ein Erfolg!)
+
+1. Öffne den Ordner `03-mini-quiz` und starte **Live Server** (»Go Live«).
+2. Öffne `script.js`. Ganz oben siehst du die Liste `fragen`.
+3. Ändere bei der ersten Frage den `frage:`-Text in eine eigene Frage. Speichern (Strg+S).
+4. Im Browser neu laden (F5) – deine Frage ist da! 🎉
+
 ## So startest du
 
 1. Öffne den Ordner `03-mini-quiz`.

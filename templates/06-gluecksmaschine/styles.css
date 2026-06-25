@@ -1,0 +1,72 @@
+/* ====================================================
+   Farben – ändere sie und schau, was passiert!
+   ==================================================== */
+:root {
+  --haupt: #00b894;     /* die Hauptfarbe */
+  --hell:  #e9fff8;     /* heller Hintergrund */
+  --text:  #2d3436;     /* Textfarbe */
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Comic Sans MS", "Segoe UI", sans-serif;
+  background: var(--hell);
+  color: var(--text);
+  line-height: 1.6;
+  text-align: center;
+}
+
+/* ======= Kopfbereich ======= */
+.kopf {
+  padding: 2.5rem 1rem;
+  background: linear-gradient(135deg, var(--haupt), #55efc4);
+  color: white;
+}
+.kopf h1 { margin: 0.2rem 0; font-size: 2.2rem; }
+.kopf p  { margin: 0; opacity: 0.9; }
+
+/* ======= Inhalt ======= */
+main {
+  max-width: 520px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+/* Die Box mit der Nachricht */
+.anzeige {
+  background: white;
+  border-radius: 20px;
+  padding: 2.5rem 1.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.6rem;
+  min-height: 4rem;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+}
+
+/* Der große Knopf */
+button {
+  font-family: inherit;
+  font-size: 1.3rem;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 50px;
+  background: var(--haupt);
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 5px 0 #009974;   /* macht den 3D-Knopf-Effekt */
+  transition: transform 0.1s;
+}
+
+/* Wenn man drückt, sinkt der Knopf nach unten */
+button:active {
+  transform: translateY(4px);
+  box-shadow: 0 1px 0 #009974;
+}
+
+footer {
+  padding: 2rem 1rem;
+  color: #7fae9f;
+  font-size: 0.9rem;
+}

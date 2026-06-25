@@ -157,4 +157,17 @@ Jedes Template hat eine eigene `README.md` mit einer **Ideen-Leiter**: von leich
 - **Du bist stecken geblieben?** Frag die **KI** oder den Betreuer – z. B. »Wie mache
   ich die Überschrift größer?«. Fehler sind völlig normal!
 
+> **Genauere Hilfe:** Wenn etwas kaputt ist, schau in **[HILFE.md](HILFE.md)** – dort
+> stehen die häufigsten Fehler und wie du sie löst. 🛠️
+
+## Deine drei besten Helfer 📎
+
+Leg dir diese drei Dateien bereit – sie helfen dir den ganzen Kurs lang:
+
+- 🧀 **[SPICKZETTEL.md](SPICKZETTEL.md)** – alle wichtigen HTML/CSS/JS-Bausteine auf
+  einer Seite. Am besten **ausdrucken** und neben den Computer legen!
+- 🛠️ **[HILFE.md](HILFE.md)** – „Hilfe, es ist kaputt!" mit den häufigsten Fehlern.
+- 🏅 **[ABZEICHEN.md](ABZEICHEN.md)** – sammle Abzeichen für alles, was du schaffst.
+  Wie viele kriegst du zusammen?
+
 Viel Spaß beim Bauen! 🚀
