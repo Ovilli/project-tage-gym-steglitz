@@ -1,0 +1,393 @@
+/* ============================================================
+   JS-Challenge – Aussehen im Stil eines Code-Editors (VS Code)
+   Dies ist das Spiel selbst. Spieler ändern nur das JavaScript
+   im Eingabefeld, nicht diese Datei.
+   ============================================================ */
+
+:root {
+  /* VS-Code-Farben (Dark+) */
+  --bg:        #1e1e1e;
+  --bg-2:      #252526;
+  --bg-3:      #2d2d2d;
+  --rand:      #3c3c3c;
+  --rand-soft: #333333;
+  --txt:       #d4d4d4;
+  --txt-dim:   #858585;
+  --blau:      #007acc;
+  --statusbar: #007acc;
+
+  /* Syntax-Highlight */
+  --c-kw:   #569cd6;   /* Schlüsselwörter: let, if, for … */
+  --c-str:  #ce9178;   /* Zeichenketten "…" */
+  --c-num:  #b5cea8;   /* Zahlen */
+  --c-fn:   #dcdcaa;   /* Funktionsnamen */
+  --c-com:  #6a9955;   /* Kommentare */
+
+  --gut: #4ec9b0;
+  --schlecht: #f48771;
+}
+
+* { box-sizing: border-box; }
+
+html, body { height: 100%; margin: 0; }
+body {
+  font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+  background: #14141c;
+  color: var(--txt);
+  overflow: hidden;
+}
+
+/* ===================== EDITOR-FENSTER (Vollbild) ===================== */
+.ide {
+  width: 100vw;
+  height: 100vh;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---- Titelleiste ---- */
+.titelbar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 9px 14px;
+  background: #323233;
+  border-bottom: 1px solid var(--rand);
+  user-select: none;
+  flex: none;
+}
+.ampel { display: flex; gap: 8px; }
+.ampel span { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+.ampel-rot   { background: #ff5f56; }
+.ampel-gelb  { background: #ffbd2e; }
+.ampel-gruen { background: #27c93f; }
+.titel {
+  flex: 1;
+  text-align: center;
+  font-size: 0.82rem;
+  color: #cccccc;
+}
+.titel-rechts { display: flex; align-items: center; gap: 10px; }
+#sterne { font-size: 0.85rem; font-weight: 600; color: #ffd479; }
+.ikon-knopf {
+  background: transparent;
+  border: 1px solid var(--rand);
+  color: #cccccc;
+  font-size: 0.95rem;
+  line-height: 1;
+  padding: 4px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.ikon-knopf:hover { background: #2a2d2e; }
+
+/* ---- Tabs ---- */
+.tabbar { display: flex; background: var(--bg-2); border-bottom: 1px solid var(--rand); flex: none; }
+.tab {
+  display: flex; align-items: center; gap: 8px;
+  padding: 9px 16px; font-size: 0.82rem;
+  border-right: 1px solid var(--rand); position: relative;
+}
+.tab.aktiv { background: var(--bg); color: #ffffff; }
+.tab.aktiv::after {
+  content: ""; position: absolute; left: 0; right: 0; top: -1px; height: 2px; background: var(--blau);
+}
+.tab.inaktiv { color: var(--txt-dim); background: var(--bg-3); }
+.tab-icon { color: var(--c-fn); font-weight: 700; font-family: "JetBrains Mono", monospace; font-size: 0.72rem; }
+.tab-punkt { width: 8px; height: 8px; border-radius: 50%; background: #c5c5c5; opacity: 0; transition: opacity .2s; }
+.tab-punkt.zeigen { opacity: 1; }
+
+/* ---- Korpus: zwei Spalten, füllt den Rest ---- */
+.korpus {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1fr 1.05fr;
+}
+.panel { min-width: 0; min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
+.vorschau { border-right: 1px solid var(--rand); background: var(--bg-2); overflow-y: auto; }
+
+.panel-kopf {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 16px; font-size: 0.7rem; font-weight: 700; letter-spacing: 1.5px;
+  color: var(--txt-dim); border-bottom: 1px solid var(--rand-soft); flex: none;
+}
+.panel-kopf .selektor {
+  margin-left: auto; font-family: "JetBrains Mono", monospace;
+  color: var(--c-fn); letter-spacing: 0; font-weight: 500;
+}
+
+/* ---- Vorschau: zwei Konsolen ---- */
+.vergleich { display: flex; gap: 14px; padding: 18px 16px 6px; flex: none; }
+.konsole-feld { flex: 1; margin: 0; min-width: 0; }
+.konsole {
+  height: 150px; overflow: auto;
+  border-radius: 10px; border: 1px solid var(--rand);
+  background: #181818; padding: 10px 12px;
+  font-family: "JetBrains Mono", "Consolas", monospace;
+  font-size: 13px; line-height: 1.6; color: #d4d4d4;
+}
+.konsole .zeile { white-space: pre-wrap; word-break: break-word; }
+.konsole .zeile::before { content: "› "; color: var(--gut); }
+.konsole .zeile.fehler { color: var(--schlecht); }
+.konsole .zeile.fehler::before { content: "✗ "; color: var(--schlecht); }
+.konsole .konsole-leer { color: #5a5a5a; font-style: italic; }
+.konsole.gewonnen { border-color: var(--gut); animation: blitzen 0.5s ease; }
+@keyframes blitzen {
+  0%,100% { box-shadow: 0 0 0 0 rgba(78,201,176,0); }
+  40%     { box-shadow: 0 0 0 4px rgba(78,201,176,0.45); }
+}
+.konsole-feld figcaption { text-align: center; margin-top: 8px; font-size: 0.82rem; color: #b9b9b9; }
+
+/* ---- Aufgabe ---- */
+.aufgabe {
+  margin: 10px 16px; padding: 14px 16px;
+  background: var(--bg); border: 1px solid var(--rand);
+  border-left: 3px solid var(--blau); border-radius: 8px; flex: none;
+}
+.aufgabe-kopf { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.aufgabe h2 { margin: 0 0 6px; font-size: 1rem; color: #ffffff; }
+.schwierigkeit { color: #ffd479; font-size: 0.95rem; letter-spacing: 2px; white-space: nowrap; }
+.aufgabe p { margin: 4px 0; font-size: 0.9rem; color: #cfcfcf; }
+.tipp-knopf {
+  margin-top: 10px; background: transparent; color: #d7b66a;
+  border: 1px solid rgba(215,182,106,0.4); border-radius: 6px;
+  font-size: 0.8rem; padding: 5px 10px;
+}
+.tipp-knopf:hover { background: rgba(215,182,106,0.12); }
+.tipp {
+  margin: 10px 0 0 !important; display: flex; gap: 8px; align-items: baseline;
+  font-size: 0.84rem !important; color: #b8b8b8 !important;
+}
+.tipp[hidden] { display: none; }
+.tipp-label {
+  flex: none; font-size: 0.62rem; font-weight: 700; letter-spacing: 1px;
+  color: #d7b66a; background: rgba(215,182,106,0.12);
+  padding: 2px 7px; border-radius: 5px;
+}
+.tipp code, .tipp b { font-family: "JetBrains Mono", monospace; color: #d8d8c0; }
+
+/* ---- Autocomplete-Dropdown (wie in VS Code) ---- */
+.autocomplete {
+  position: absolute; z-index: 20;
+  margin: 0; padding: 4px; list-style: none;
+  background: #252526; border: 1px solid #454545;
+  border-radius: 6px; box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+  font-family: "JetBrains Mono", monospace; font-size: 13px;
+  max-height: 168px; overflow-y: auto; min-width: 190px;
+}
+.autocomplete[hidden] { display: none; }
+.autocomplete li {
+  display: flex; align-items: center; gap: 8px;
+  padding: 4px 8px; border-radius: 4px; color: #d4d4d4; cursor: pointer;
+  white-space: nowrap;
+}
+.autocomplete li .ac-typ {
+  font-size: 10px; color: #1e1e1e; background: var(--c-kw);
+  border-radius: 3px; padding: 0 5px; font-weight: 700;
+}
+.autocomplete li.ac-fn .ac-typ { background: var(--c-fn); }
+.autocomplete li.aktiv { background: #04395e; }
+.autocomplete li b { color: #ffffff; font-weight: 700; }
+
+/* ---- Lernkarte (nach dem Lösen) ---- */
+.lernkarte {
+  margin: 10px 16px; padding: 16px;
+  background: linear-gradient(180deg, #143b2e, #11302a);
+  border: 1px solid #1f6b52; border-left: 3px solid var(--gut);
+  border-radius: 8px; flex: none;
+  animation: einblenden .35s ease;
+}
+.lernkarte[hidden] { display: none; }
+@keyframes einblenden { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.lernkarte .lk-titel { font-weight: 700; color: #6ee7b7; margin-bottom: 6px; font-size: 0.95rem; }
+.lernkarte .lk-merke { font-size: 0.9rem; color: #d7f5e9; margin: 0 0 10px; }
+.lernkarte .lk-merke b { color: #fff; }
+.lernkarte code {
+  display: inline-block; font-family: "JetBrains Mono", monospace;
+  background: #0c241d; color: #b5cea8; padding: 2px 8px; border-radius: 5px;
+  font-size: 0.85rem; margin-top: 2px; white-space: pre-wrap;
+}
+.lernkarte .lk-weiter {
+  margin-top: 12px; background: var(--gut); color: #07261d; border: none;
+  width: 100%; justify-content: center;
+}
+.lernkarte .lk-weiter:hover { background: #5fd6b0; }
+
+/* ---- Vor / Zurück ---- */
+.nav {
+  margin-top: auto;
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 16px; border-top: 1px solid var(--rand-soft); flex: none;
+}
+.nav-mitte { flex: 1; text-align: center; font-size: 0.82rem; color: var(--txt-dim); }
+#weiter-knopf.bereit {
+  background: var(--blau); color: #fff; border-color: var(--blau);
+  animation: pochen 1.1s ease-in-out infinite;
+}
+@keyframes pochen {
+  0%,100% { box-shadow: 0 0 0 0 rgba(0,122,204,0.5); }
+  50%     { box-shadow: 0 0 0 6px rgba(0,122,204,0); }
+}
+
+/* ===================== EDITOR ===================== */
+.editor-panel { background: var(--bg); }
+.editor {
+  flex: 1; min-height: 0; display: flex;
+  background: var(--bg);
+  font-family: "JetBrains Mono", "Consolas", monospace;
+  font-size: 15px; line-height: 1.7;
+}
+.gutter {
+  flex: none; padding: 14px 12px 14px 0; text-align: right;
+  color: var(--txt-dim); user-select: none; white-space: pre;
+  min-width: 46px; border-right: 1px solid var(--rand-soft); overflow: hidden;
+}
+.code-wrap { position: relative; flex: 1; min-width: 0; }
+.highlight,
+#js-eingabe {
+  margin: 0; padding: 14px 16px; font: inherit; line-height: inherit;
+  white-space: pre; overflow: auto; position: absolute; inset: 0;
+  border: none; tab-size: 2;
+}
+.highlight { color: var(--txt); pointer-events: none; overflow: hidden; }
+#js-eingabe {
+  background: transparent; color: transparent;
+  caret-color: #ffffff; resize: none; outline: none;
+}
+#js-eingabe::placeholder { color: #5a5a5a; }
+#js-eingabe::selection { background: rgba(0,122,204,0.35); }
+
+.c-kw   { color: var(--c-kw); }
+.c-str  { color: var(--c-str); }
+.c-num  { color: var(--c-num); }
+.c-fn   { color: var(--c-fn); }
+.c-com  { color: var(--c-com); font-style: italic; }
+
+/* ---- Rückmeldung ---- */
+.rueckmeldung {
+  min-height: 1.5rem; margin: 4px 16px;
+  font-size: 0.88rem; font-weight: 500; color: var(--txt-dim); flex: none;
+}
+.rueckmeldung.gut  { color: var(--gut); }
+.rueckmeldung.warn { color: var(--schlecht); }
+
+/* ---- Knöpfe ---- */
+.knopf-reihe { display: flex; gap: 10px; padding: 8px 16px 16px; flex-wrap: wrap; flex: none; }
+button {
+  font-family: "Inter", sans-serif; font-size: 0.86rem; font-weight: 600;
+  padding: 9px 16px; border: 1px solid transparent; border-radius: 6px;
+  cursor: pointer; transition: background .15s, border-color .15s, transform .05s;
+}
+button:active { transform: translateY(1px); }
+button:disabled { opacity: 0.4; cursor: not-allowed; }
+button.prim { background: var(--blau); color: #ffffff; display: inline-flex; align-items: center; gap: 8px; }
+button.prim:hover { background: #0a8ae0; }
+button.sek { background: transparent; color: #cccccc; border-color: var(--rand); }
+button.sek:hover:not(:disabled) { background: #2a2d2e; border-color: #555; }
+kbd {
+  font-family: "JetBrains Mono", monospace; font-size: 0.72rem;
+  background: rgba(255,255,255,0.18); padding: 1px 6px; border-radius: 4px; font-weight: 500;
+}
+
+/* ===================== STATUSBAR ===================== */
+.statusbar {
+  display: flex; align-items: center; gap: 14px;
+  padding: 5px 14px; background: var(--statusbar); color: #ffffff; font-size: 0.76rem; flex: none;
+}
+.status-links, .status-rechts { display: flex; align-items: center; gap: 7px; }
+.status-progress { flex: 1; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 3px rgba(255,255,255,0.25); }
+.balken { display: block; height: 6px; background: rgba(255,255,255,0.25); border-radius: 50px; overflow: hidden; }
+#balken-fuell { display: block; height: 100%; width: 0%; background: #fff; border-radius: 50px; transition: width 0.45s cubic-bezier(.4,0,.2,1); }
+
+/* ===================== SIEG-BILDSCHIRM ===================== */
+.sieg { text-align: center; padding: 50px 24px; grid-column: 1 / -1; margin: auto; }
+.sieg h2 { font-size: 1.8rem; margin: 0 0 10px; color: #fff; }
+.sieg p  { color: #cfcfcf; max-width: 520px; margin: 8px auto; }
+
+/* ===================== SPICKZETTEL (Modal) ===================== */
+.modal {
+  position: fixed; inset: 0; z-index: 50;
+  background: rgba(0,0,0,0.6);
+  display: flex; align-items: center; justify-content: center; padding: 24px;
+}
+.modal[hidden] { display: none; }
+.modal-box {
+  background: var(--bg-2); border: 1px solid var(--rand); border-radius: 12px;
+  width: 100%; max-width: 560px; max-height: 80vh; overflow-y: auto;
+  padding: 20px 22px; box-shadow: 0 30px 70px rgba(0,0,0,0.6);
+}
+.modal-kopf { display: flex; align-items: center; justify-content: space-between; }
+.modal-kopf h2 { margin: 0; font-size: 1.2rem; color: #fff; }
+.modal-unter { color: var(--txt-dim); font-size: 0.85rem; margin: 4px 0 16px; }
+.spick-liste { display: flex; flex-direction: column; gap: 10px; }
+.spick-leer { color: var(--txt-dim); font-size: 0.9rem; text-align: center; padding: 24px 0; }
+.merk-karte {
+  background: var(--bg); border: 1px solid var(--rand);
+  border-left: 3px solid var(--blau); border-radius: 8px; padding: 12px 14px;
+}
+.merk-karte .mk-titel { font-weight: 700; color: var(--c-fn); font-family: "JetBrains Mono", monospace; font-size: 0.9rem; }
+.merk-karte .mk-text { color: #cfcfcf; font-size: 0.86rem; margin: 6px 0 8px; }
+.merk-karte .mk-text b { color: #fff; }
+.merk-karte code {
+  font-family: "JetBrains Mono", monospace; font-size: 0.82rem;
+  background: #11161c; color: #b5cea8; padding: 3px 8px; border-radius: 5px; display: inline-block;
+  white-space: pre-wrap;
+}
+
+/* ===================== SCHMALE BILDSCHIRME ===================== */
+@media (max-width: 760px) {
+  body { overflow: auto; }
+  .ide { height: auto; min-height: 100vh; }
+  .korpus { grid-template-columns: 1fr; }
+  .vorschau { border-right: none; border-bottom: 1px solid var(--rand); }
+  .titel { display: none; }
+  .code-wrap { min-height: 200px; }
+  .editor { min-height: 200px; }
+}
+
+/* ===================== BUTTON-LEVEL: LIVE-BÜHNE ===================== */
+.buehne-wrap { padding: 18px 16px 4px; flex: none; }
+.buehne {
+  min-height: 150px;
+  border-radius: 10px; border: 1px solid var(--rand);
+  background:
+    linear-gradient(45deg, #2a2a2a 25%, transparent 25%) 0 0 / 18px 18px,
+    linear-gradient(-45deg, #2a2a2a 25%, transparent 25%) 0 9px / 18px 18px,
+    linear-gradient(45deg, transparent 75%, #2a2a2a 75%) 9px -9px / 18px 18px,
+    linear-gradient(-45deg, transparent 75%, #2a2a2a 75%) -9px 0 / 18px 18px,
+    #262626;
+  display: flex; flex-direction: column; gap: 14px;
+  align-items: center; justify-content: center;
+  padding: 22px; text-align: center;
+}
+.buehne.gewonnen { border-color: var(--gut); animation: blitzen 0.5s ease; }
+.buehne-leer { color: #6a6a6a; font-style: italic; font-size: 0.86rem; }
+
+/* Elemente, die die Kinder mit JS steuern */
+.spiel-knopf {
+  font-family: "Inter", sans-serif; font-size: 1rem; font-weight: 600;
+  padding: 12px 22px; border-radius: 8px; border: none;
+  background: var(--blau); color: #fff; cursor: pointer;
+  box-shadow: 0 4px 0 #005a99; transition: transform .05s, box-shadow .05s;
+}
+.spiel-knopf:hover { background: #0a8ae0; }
+.spiel-knopf:active { transform: translateY(3px); box-shadow: 0 1px 0 #005a99; }
+.anzeige {
+  margin: 0; font-family: "JetBrains Mono", monospace;
+  font-size: 1.5rem; font-weight: 700; color: #ffffff;
+  background: #1b1b1b; border: 1px solid var(--rand);
+  padding: 8px 18px; border-radius: 8px; min-width: 90px;
+}
+.spiel-box {
+  width: 90px; height: 90px; border-radius: 10px;
+  background: #5a6270; border: 1px solid var(--rand);
+}
+
+.probier-hinweis {
+  text-align: center; font-size: 0.78rem; color: var(--txt-dim);
+  margin: 6px 16px 0; flex: none;
+}
+.probier-hinweis b { color: #b9b9b9; }

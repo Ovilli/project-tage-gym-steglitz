@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JS-Challenge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <!-- ===================== EDITOR-FENSTER (Vollbild) ===================== -->
+  <div class="ide">
+
+    <!-- Titelleiste -->
+    <div class="titelbar">
+      <div class="ampel">
+        <span class="ampel-rot"></span>
+        <span class="ampel-gelb"></span>
+        <span class="ampel-gruen"></span>
+      </div>
+      <div class="titel">JS-Challenge — lerne JavaScript wie ein Profi</div>
+      <div class="titel-rechts">
+        <span id="sterne">⭐ 0</span>
+        <button id="spick-knopf" class="ikon-knopf" title="Spickzettel: alles, was du gelernt hast">📚 Spickzettel</button>
+        <button id="vollbild-knopf" class="ikon-knopf" title="Vollbild an/aus">⛶</button>
+      </div>
+    </div>
+
+    <!-- Reiter (Tabs) -->
+    <div class="tabbar">
+      <div class="tab aktiv">
+        <span class="tab-icon">JS</span> skript.js
+        <span class="tab-punkt" id="tab-punkt"></span>
+      </div>
+      <div class="tab inaktiv" id="tab-zwei">🎯 ziel.out</div>
+    </div>
+
+    <!-- Hauptbereich: links Vorschau, rechts Editor -->
+    <div class="korpus">
+
+      <!-- ---- Vorschau-Panel ---- -->
+      <div class="panel vorschau">
+        <div class="panel-kopf" id="vorschau-kopf">AUSGABE (KONSOLE)</div>
+
+        <!-- Bereich A: zwei Konsolen (für Konsolen-Level) -->
+        <div id="konsole-bereich">
+          <div class="vergleich">
+            <figure class="konsole-feld">
+              <div id="ziel-ausgabe" class="konsole"></div>
+              <figcaption>🎯 Ziel-Ausgabe</figcaption>
+            </figure>
+            <figure class="konsole-feld">
+              <div id="deine-ausgabe" class="konsole"></div>
+              <figcaption>🙋 Deine Ausgabe</figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <!-- Bereich B: echte, klickbare Bühne (für Button-Level) -->
+        <div id="button-bereich" hidden>
+          <div class="buehne-wrap">
+            <div id="buehne" class="buehne">
+              <span class="buehne-leer">Klick auf ▶ Ausführen – dann erscheint hier dein Knopf.</span>
+            </div>
+          </div>
+          <p class="probier-hinweis">🖱️ <b>Klick deinen Knopf selbst an</b> und schau, was passiert!</p>
+        </div>
+
+        <div class="aufgabe">
+          <div class="aufgabe-kopf">
+            <h2 id="aufgabe-titel">Aufgabe</h2>
+            <span class="schwierigkeit" id="schwierigkeit">★</span>
+          </div>
+          <p id="aufgabe-text">…</p>
+          <button id="tipp-knopf" class="tipp-knopf">💡 Tipp anzeigen</button>
+          <p class="tipp" id="tipp-box" hidden><span class="tipp-label">TIPP</span> <span id="aufgabe-tipp">…</span></p>
+        </div>
+
+        <!-- Lernkarte: erscheint nach dem Lösen -->
+        <div class="lernkarte" id="lernkarte" hidden></div>
+
+        <!-- Vor / Zurück -->
+        <div class="nav">
+          <button id="zurueck-knopf" class="sek">◀ Zurück</button>
+          <span class="nav-mitte" id="nav-mitte">Level 1 / 29</span>
+          <button id="weiter-knopf" class="sek">Weiter ▶</button>
+        </div>
+      </div>
+
+      <!-- ---- Editor-Panel ---- -->
+      <div class="panel editor-panel">
+        <div class="panel-kopf">
+          EDITOR
+          <span class="selektor">skript.js</span>
+        </div>
+
+        <div class="editor">
+          <div class="gutter" id="gutter">1</div>
+          <div class="code-wrap">
+            <pre class="highlight" id="highlight" aria-hidden="true"></pre>
+            <textarea id="js-eingabe" spellcheck="false" autocomplete="off"
+                      autocapitalize="off" wrap="off"
+                      placeholder="Tippe hier dein JavaScript, z. B.  console.log(&quot;Hallo&quot;);"></textarea>
+            <ul id="ac" class="autocomplete" hidden></ul>
+          </div>
+        </div>
+
+        <div id="rueckmeldung" class="rueckmeldung"></div>
+
+        <div class="knopf-reihe">
+          <button id="pruefen-knopf" class="prim">▶ Ausführen <kbd>Strg+↵</kbd></button>
+          <button id="loesung-knopf" class="sek">Lösung</button>
+          <button id="reset-knopf" class="sek">Leeren</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Statusleiste -->
+    <div class="statusbar">
+      <span class="status-links">
+        <span class="dot"></span><span id="level-zahl">Level 1 / 29</span>
+      </span>
+      <span class="status-progress">
+        <span class="balken"><span id="balken-fuell"></span></span>
+      </span>
+      <span class="status-rechts">JavaScript · UTF-8 · Zeile <span id="cursor-zeile">1</span></span>
+    </div>
+
+  </div>
+
+  <!-- ===================== SPICKZETTEL (Modal) ===================== -->
+  <div class="modal" id="spick-modal" hidden>
+    <div class="modal-box">
+      <div class="modal-kopf">
+        <h2>📚 Dein Spickzettel</h2>
+        <button id="spick-zu" class="ikon-knopf">✕</button>
+      </div>
+      <p class="modal-unter">Alles, was du schon gelernt hast – zum Nachschlagen.</p>
+      <div id="spick-liste" class="spick-liste"></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
